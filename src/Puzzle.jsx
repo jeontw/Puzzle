@@ -2,83 +2,79 @@ import React, { useState } from 'react';
 import './Puzzle.css';
 
 const Puzzle = () => {
-    const [보드, 보드설정] = useState(보드생성());
+    const [board, setBoard] = useState(createBoard());
 
-    function 보드생성() {
-        const 숫자들 = [...Array(15).keys(), null];
-        return 숫자들;
+    function createBoard() {
+        const numbers = [...Array(15).keys(), null];
+        return numbers;
     }
 
-
-    const handleTileClick = (인덱스) => {
-        const 빈칸인덱스 = 보드.indexOf(null);
-        const 새로운보드 = [...보드];
-        const isAdjacent = (인덱스 === 빈칸인덱스 - 4 || 인덱스 === 빈칸인덱스 + 4 || 인덱스 === 빈칸인덱스 - 8 || 인덱스 === 빈칸인덱스 + 8 || 인덱스 === 빈칸인덱스 - 12 || 인덱스 === 빈칸인덱스 + 12);
-        const 예외 = (인덱스 === 빈칸인덱스 - 1 || 인덱스 === 빈칸인덱스 + 1 || 인덱스 === 빈칸인덱스 - 2 || 인덱스 === 빈칸인덱스 + 2 || 인덱스 === 빈칸인덱스 - 3 || 인덱스 === 빈칸인덱스 + 3);
+    const handleTileClick = (idx) => {
+        const emptyIndex = board.indexOf(null);
+        const newBoard = [...board];
+        const isAdjacent = (idx === emptyIndex - 4 || idx === emptyIndex + 4 || idx === emptyIndex - 8 || idx === emptyIndex + 8 || idx === emptyIndex - 12 || idx === emptyIndex + 12);
+        const exception = (idx === emptyIndex - 1 || idx === emptyIndex + 1 || idx === emptyIndex - 2 || idx === emptyIndex + 2 || idx === emptyIndex - 3 || idx === emptyIndex + 3);
 
         if (isAdjacent) {
-
-            if (인덱스 === 빈칸인덱스 - 4 || 인덱스 === 빈칸인덱스 + 4) {
-                [새로운보드[인덱스], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스]];
+            if (idx === emptyIndex - 4 || idx === emptyIndex + 4) {
+                [newBoard[idx], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx]];
             }
-            if (인덱스 === 빈칸인덱스 - 8) {
-                [새로운보드[인덱스], 새로운보드[인덱스 + 4], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 + 4]];
+            if (idx === emptyIndex - 8) {
+                [newBoard[idx], newBoard[idx + 4], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 4]];
             }
-            if (인덱스 === 빈칸인덱스 + 8) {
-                [새로운보드[인덱스], 새로운보드[인덱스 - 4], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 - 4]];
+            if (idx === emptyIndex + 8) {
+                [newBoard[idx], newBoard[idx - 4], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 4]];
             }
-            if (인덱스 === 빈칸인덱스 - 12) {
-                [새로운보드[인덱스], 새로운보드[인덱스 + 4], 새로운보드[인덱스 + 8], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 + 4], 새로운보드[인덱스 + 8]];
+            if (idx === emptyIndex - 12) {
+                [newBoard[idx], newBoard[idx + 4], newBoard[idx + 8], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 4], newBoard[idx + 8]];
             }
-            if (인덱스 === 빈칸인덱스 + 12) {
-                [새로운보드[인덱스], 새로운보드[인덱스 - 4], 새로운보드[인덱스 - 8], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 - 4], 새로운보드[인덱스 - 8]];
+            if (idx === emptyIndex + 12) {
+                [newBoard[idx], newBoard[idx - 4], newBoard[idx - 8], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 4], newBoard[idx - 8]];
             }
-            보드설정(새로운보드);
+            setBoard(newBoard);
         }
-        if (예외) {
-            if (((0 <= 인덱스 && 인덱스 <= 3) && (0 <= 빈칸인덱스 && 빈칸인덱스 <= 3)) || ((4 <= 인덱스 && 인덱스 <= 7) && (4 <= 빈칸인덱스 && 빈칸인덱스 <= 7)) ||
-                ((8 <= 인덱스 && 인덱스 <= 11) && (8 <= 빈칸인덱스 && 빈칸인덱스 <= 11)) || ((12 <= 인덱스 && 인덱스 <= 15) && (12 <= 빈칸인덱스 && 빈칸인덱스 <= 15))) {
-                if (인덱스 === 빈칸인덱스 - 1 || 인덱스 === 빈칸인덱스 + 1) {
-                    [새로운보드[인덱스], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스]];
+        if (exception) {
+            if (((0 <= idx && idx <= 3) && (0 <= emptyIndex && emptyIndex <= 3)) || 
+                ((4 <= idx && idx <= 7) && (4 <= emptyIndex && emptyIndex <= 7)) ||
+                ((8 <= idx && idx <= 11) && (8 <= emptyIndex && emptyIndex <= 11)) || 
+                ((12 <= idx && idx <= 15) && (12 <= emptyIndex && emptyIndex <= 15))) {
+                if (idx === emptyIndex - 1 || idx === emptyIndex + 1) {
+                    [newBoard[idx], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx]];
                 }
-                if (인덱스 === 빈칸인덱스 - 2) {
-                    [새로운보드[인덱스], 새로운보드[인덱스 + 1], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 + 1]];
+                if (idx === emptyIndex - 2) {
+                    [newBoard[idx], newBoard[idx + 1], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 1]];
                 }
-                if (인덱스 === 빈칸인덱스 + 2) {
-                    [새로운보드[인덱스], 새로운보드[인덱스 - 1], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 - 1]];
+                if (idx === emptyIndex + 2) {
+                    [newBoard[idx], newBoard[idx - 1], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 1]];
                 }
-                if (인덱스 === 빈칸인덱스 - 3) {
-                    [새로운보드[인덱스], 새로운보드[인덱스 + 1], 새로운보드[인덱스 + 2], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 + 1], 새로운보드[인덱스 + 2]];
+                if (idx === emptyIndex - 3) {
+                    [newBoard[idx], newBoard[idx + 1], newBoard[idx + 2], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 1], newBoard[idx + 2]];
                 }
-                if (인덱스 === 빈칸인덱스 + 3) {
-                    [새로운보드[인덱스], 새로운보드[인덱스 - 1], 새로운보드[인덱스 - 2], 새로운보드[빈칸인덱스]] = [새로운보드[빈칸인덱스], 새로운보드[인덱스], 새로운보드[인덱스 - 1], 새로운보드[인덱스 - 2]];
+                if (idx === emptyIndex + 3) {
+                    [newBoard[idx], newBoard[idx - 1], newBoard[idx - 2], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 1], newBoard[idx - 2]];
                 }
-                보드설정(새로운보드);
+                setBoard(newBoard);
             }
         }
     };
-
 
     const handleClick = () => {
         for (let i = 0; i < 5; i++) {
-            const 랜덤인덱스 = Math.floor(Math.random() * 보드.length);
-            handleTileClick(랜덤인덱스);
+            const randomIndex = Math.floor(Math.random() * board.length);
+            handleTileClick(randomIndex);
         }
     };
-
 
     return (
         <div className='퍼즐'>
             <div>
-
                 <button onClick={handleClick}>셔플</button>
-
             </div>
             <div className="퍼즐-컨테이너">
-                {보드.map((값, 인덱스) => {
+                {board.map((value, idx) => {
                     return (
-                        <div key={인덱스} className={`퍼즐-조각 ${값 === null ? '빈칸' : ''}`}
-                            onClick={() => handleTileClick(인덱스)}>{값 + 1}</div>
+                        <div key={idx} className={`퍼즐-조각 ${value === null ? '빈칸' : ''}`}
+                            onClick={() => handleTileClick(idx)}>{value + 1}</div>
                     );
                 })}
             </div>
