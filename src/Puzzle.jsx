@@ -6,13 +6,9 @@ const Puzzle = () => {
 
     function 보드생성() {
         const 숫자들 = [...Array(15).keys(), null];
-        return shuffleArray(숫자들);
+        return 숫자들;
     }
 
-    function shuffleArray(array) {
-        return array.sort(() => Math.random() - 0.5);
-        //아무거나 랜덤으로 클릭하기
-    }
 
     const handleTileClick = (인덱스) => {
         const 빈칸인덱스 = 보드.indexOf(null);
@@ -62,8 +58,22 @@ const Puzzle = () => {
         }
     };
 
+
+    const handleClick = () => {
+        for (let i = 0; i < 5; i++) {
+            const 랜덤인덱스 = Math.floor(Math.random() * 보드.length);
+            handleTileClick(랜덤인덱스);
+        }
+    };
+
+
     return (
         <div className='퍼즐'>
+            <div>
+
+                <button onClick={handleClick}>셔플</button>
+
+            </div>
             <div className="퍼즐-컨테이너">
                 {보드.map((값, 인덱스) => {
                     return (
