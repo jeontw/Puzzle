@@ -1,9 +1,9 @@
 .퍼즐{
-    width: 100%; 
+    width: 800px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 800px;
 }
 .퍼즐-컨테이너 {
     display: grid;
@@ -31,4 +31,9 @@
     background-color: transparent;
     cursor: default;
     color: transparent;
+}
+.btn {
+    background-color: antiquewhite;
+    width: 300px;
+    height: 300px;
 }
