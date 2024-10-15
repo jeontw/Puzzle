@@ -1,3 +1,44 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.제목{
+  text-align: center;
+  margin: 40px;
+}
+
+.전체화면 {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.미정{
+  background-color: lightyellow;
+  width: 400px;
+  height: 710px;
+  margin-left: 20px;
+}
+
+
+
+.게임화면{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.기록{
+  background-color: lightgray;
+  width: 630px;
+  height: 260px;
+  display: flex;
+}
+.타이머{
+  width: 180px;
+  height: 100px;
 }

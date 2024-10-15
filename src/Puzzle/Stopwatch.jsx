@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Stopwatch = ({ isActive }) => {
+const Stopwatch = ({ isActive,setIsButtonVisible }) => {
     const [seconds, setSeconds] = useState(0);
 
     useEffect(() => {
@@ -17,12 +17,13 @@ const Stopwatch = ({ isActive }) => {
 
     const handleReset = () => {
         setSeconds(0);
+        setIsButtonVisible(true);
     };
 
     return (
-        <div>
-            <h1>스톱워치: {seconds} 초</h1>
-            <button onClick={handleReset}>리셋</button>
+        <div className='타이머'>
+            <h1>Timer: {seconds} s</h1>
+            <button onClick={handleReset}>기록</button>
         </div>
     );
 };
