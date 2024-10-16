@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const Stopwatch = ({ isActive,setIsButtonVisible }) => {
-    const [seconds, setSeconds] = useState(0);
+const Stopwatch = ({ isActive,setIsButtonVisible,seconds, setSeconds }) => {
+    
 
     useEffect(() => {
         let interval;
 
         if (isActive) {
             interval = setInterval(() => {
-                setSeconds(prevSeconds => prevSeconds + 1);
-            }, 1000);
+                setSeconds(prevSeconds => prevSeconds + 0.1);
+            }, 100);
         }
 
         return () => clearInterval(interval);
-    }, [isActive]);
+    }, [isActive, setSeconds]);
 
     const handleReset = () => {
         setSeconds(0);
@@ -22,7 +22,7 @@ const Stopwatch = ({ isActive,setIsButtonVisible }) => {
 
     return (
         <div className='타이머'>
-            <h1>Timer: {seconds} s</h1>
+            <h1>Timer: {seconds.toFixed(1)}s</h1>
             <button onClick={handleReset}>기록</button>
         </div>
     );

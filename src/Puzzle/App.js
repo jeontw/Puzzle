@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import Puzzle from './Puzzle';
 import "./App.css"
 import Stopwatch from './Stopwatch';
+import Today from './Today';
+import World from './World';
 
 const App = () => {
     const [isActive, setIsActive] = useState(false);
     const [isButtonVisible, setIsButtonVisible] = useState(true)
+    const [seconds, setSeconds] = useState(0);
     return (
         <>
             <h1 className='제목'>Sliding Puzzle</h1>
@@ -18,12 +21,19 @@ const App = () => {
                         setIsButtonVisible={setIsButtonVisible} />
                         <Stopwatch 
                         isActive={isActive} 
-                        setIsButtonVisible={setIsButtonVisible}/>
+                        setIsButtonVisible={setIsButtonVisible}
+                        seconds={seconds}
+                        setSeconds={setSeconds}
+                        />
                     </div>
-                    <div className='기록'>나의 기록 평균 등 예정</div>
+                    <div className='기록'>
+                        <Today
+                        seconds={seconds}
+                        />
+                        </div>
                     
                 </div>
-                <div className='미정'>World Ranking</div>
+                <div className='미정'><World></World></div>
             </div>
         </>
     );

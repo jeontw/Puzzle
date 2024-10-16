@@ -90,18 +90,17 @@ const Puzzle = ({setIsActive, isButtonVisible, setIsButtonVisible}) => {
             const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
             moveTile(randomMove, emptyIndex, newBoard);
             setBoard([...newBoard]);
-            await sleep(10); // 0.01초 대기
+            await sleep(10);
         }
         setIsShuffling(false);
         setIsActive(true);
+        setIsButtonVisible(false)
     };
 
     const handleClick = () => {
         if (!isShuffling) {
             shuffleBoard();
         }
-        setIsButtonVisible(false)
-
     };
 
     const Win = (currentBoard) => {

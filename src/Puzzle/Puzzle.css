@@ -35,10 +35,20 @@
     height: 100px;
     border-radius: 8px;
 }
+.퍼즐-조각:hover{
+    background-color: sandybrown;
+}
+.퍼즐-조각:active{
+    transform: scale(0.95);
+}
+
+
 
 .빈칸 {
     background-color: transparent;
     cursor: default;
     color: transparent;
 }
-
+.빈칸:hover{
+    background-color: transparent;
+}
