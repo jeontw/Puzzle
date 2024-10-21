@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const Stopwatch = ({ isActive,setIsButtonVisible,seconds, setSeconds }) => {
+const Stopwatch = ({ isActive,setIsButtonVisible,seconds, setSeconds,setk }) => {
     
 
     useEffect(() => {
@@ -18,6 +18,7 @@ const Stopwatch = ({ isActive,setIsButtonVisible,seconds, setSeconds }) => {
     const handleReset = () => {
         setSeconds(0);
         setIsButtonVisible(true);
+        setk(seconds);
     };
 
     return (

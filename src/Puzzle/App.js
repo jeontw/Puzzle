@@ -9,6 +9,7 @@ const App = () => {
     const [isActive, setIsActive] = useState(false);
     const [isButtonVisible, setIsButtonVisible] = useState(true)
     const [seconds, setSeconds] = useState(0);
+    const [k,setk] = useState(0);
     return (
         <>
             <h1 className='제목'>Sliding Puzzle</h1>
@@ -24,11 +25,13 @@ const App = () => {
                         setIsButtonVisible={setIsButtonVisible}
                         seconds={seconds}
                         setSeconds={setSeconds}
+                        setk={setk}
                         />
                     </div>
                     <div className='기록'>
                         <Today
-                        seconds={seconds}
+                        
+                        k={k}
                         />
                         </div>
                     
