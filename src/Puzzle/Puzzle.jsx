@@ -1,139 +1,132 @@
 import React, { useState } from 'react';
-import "./Puzzle.css"
+import "./Puzzle.css";
 
-const Puzzle = ({setIsActive, isButtonVisible, setIsButtonVisible}) => {
-    const [board, setBoard] = useState(createBoard());
-    const [isShuffling, setIsShuffling] = useState(false);
+const Puzzle = ({ setIsActive, isButtonVisible, setIsButtonVisible }) => {
 
 
+    let level = 5;
+    const [퍼즐판, set퍼즐판] = useState([...Array(level*level-1).keys(), null]);
+    const [유효타일, set유효타일] = useState(true);
 
 
-    function createBoard() {
-        const numbers = [...Array(15).keys(), null];
-        return numbers;
-    }
+    const 타일이동 = (idx, 빈칸idx, 퍼즐판) => {
+        if (idx - 빈칸idx === level || idx - 빈칸idx === -level || idx - 빈칸idx === 2*level ||
+            idx - 빈칸idx === -2*level || idx - 빈칸idx === 3*level || idx - 빈칸idx === -3*level || 
+            idx - 빈칸idx === 4*level || idx - 빈칸idx === -4*level) {
 
-    const moveTile = (idx, emptyIndex, newBoard) => {
-        const isAdjacent = (idx === emptyIndex - 4 || idx === emptyIndex + 4 || idx === emptyIndex - 8 || idx === emptyIndex + 8 || idx === emptyIndex - 12 || idx === emptyIndex + 12);
-        const exception = (idx === emptyIndex - 1 || idx === emptyIndex + 1 || idx === emptyIndex - 2 || idx === emptyIndex + 2 || idx === emptyIndex - 3 || idx === emptyIndex + 3);
-
-        if (isAdjacent) {
-            if (idx === emptyIndex - 4 || idx === emptyIndex + 4) {
-                [newBoard[idx], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx]];
-            } else if (idx === emptyIndex - 8) {
-                [newBoard[idx], newBoard[idx + 4], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 4]];
-            } else if (idx === emptyIndex + 8) {
-                [newBoard[idx], newBoard[idx - 4], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 4]];
-            } else if (idx === emptyIndex - 12) {
-                [newBoard[idx], newBoard[idx + 4], newBoard[idx + 8], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 4], newBoard[idx + 8]];
-            } else if (idx === emptyIndex + 12) {
-                [newBoard[idx], newBoard[idx - 4], newBoard[idx - 8], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 4], newBoard[idx - 8]];
+            if (idx === 빈칸idx - level || idx === 빈칸idx + level) {
+                [퍼즐판[idx], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx]];
+            } 
+            else if (idx === 빈칸idx - level*2) {
+                [퍼즐판[idx], 퍼즐판[idx + level], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + level]];
+            } 
+            else if (idx === 빈칸idx + level*2) {
+                [퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - level]];
             }
-            return true;
+            else if (idx === 빈칸idx - level*3) {
+                [퍼즐판[idx], 퍼즐판[idx + level], 퍼즐판[idx + level*2], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + level], 퍼즐판[idx + level*2]];
+            } 
+            else if (idx === 빈칸idx + level*3) {
+                [퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level*2], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level*2]];
+            }
+            else if (idx === 빈칸idx - level*4) {
+                [퍼즐판[idx], 퍼즐판[idx + level], 퍼즐판[idx + level*2], 퍼즐판[idx + level*3], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + level], 퍼즐판[idx + level*2], 퍼즐판[idx + level*3]];
+            } 
+            else if (idx === 빈칸idx + level*4) {
+                [퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level*2], 퍼즐판[idx - level*3], 퍼즐판[빈칸idx]] = 
+                    [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level*2], 퍼즐판[idx - level*3]];
+            }
+
+            return set유효타일(true);
         }
-        if (exception) {
-            if (((0 <= idx && idx <= 3) && (0 <= emptyIndex && emptyIndex <= 3)) ||
-                ((4 <= idx && idx <= 7) && (4 <= emptyIndex && emptyIndex <= 7)) ||
-                ((8 <= idx && idx <= 11) && (8 <= emptyIndex && emptyIndex <= 11)) ||
-                ((12 <= idx && idx <= 15) && (12 <= emptyIndex && emptyIndex <= 15))) {
-                if (idx === emptyIndex - 1 || idx === emptyIndex + 1) {
-                    [newBoard[idx], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx]];
-                } else if (idx === emptyIndex - 2) {
-                    [newBoard[idx], newBoard[idx + 1], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 1]];
-                } else if (idx === emptyIndex + 2) {
-                    [newBoard[idx], newBoard[idx - 1], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 1]];
-                } else if (idx === emptyIndex - 3) {
-                    [newBoard[idx], newBoard[idx + 1], newBoard[idx + 2], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx + 1], newBoard[idx + 2]];
-                } else if (idx === emptyIndex + 3) {
-                    [newBoard[idx], newBoard[idx - 1], newBoard[idx - 2], newBoard[emptyIndex]] = [newBoard[emptyIndex], newBoard[idx], newBoard[idx - 1], newBoard[idx - 2]];
+
+        if (idx - 빈칸idx <level || idx - 빈칸idx <-level) {
+            if (((0 <= idx && idx < level) && (0 <= 빈칸idx && 빈칸idx < level)) ||
+                ((level <= idx && idx < level*2) && (level <= 빈칸idx && 빈칸idx < level*2)) ||
+                ((level*2 <= idx && idx < level*3) && (level*2 <= 빈칸idx && 빈칸idx < level*3)) ||
+                ((level*3 <= idx && idx < level*4) && (level*3 <= 빈칸idx && 빈칸idx < level*4)) ||
+                ((level*4 <= idx && idx < level*5) && (level*4 <= 빈칸idx && 빈칸idx < level*5))
+            ) {
+                if (idx === 빈칸idx - 1 || idx === 빈칸idx + 1) {
+                    [퍼즐판[idx], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx]];
+                } else if (idx === 빈칸idx - 2) {
+                    [퍼즐판[idx], 퍼즐판[idx + 1], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + 1]];
+                } else if (idx === 빈칸idx + 2) {
+                    [퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - 1]];
+                } else if (idx === 빈칸idx - 3) {
+                    [퍼즐판[idx], 퍼즐판[idx + 1], 퍼즐판[idx + 2], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + 1], 퍼즐판[idx + 2]];
+                } else if (idx === 빈칸idx + 3) {
+                    [퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2]];
+                } else if (idx === 빈칸idx - 4) {
+                    [퍼즐판[idx], 퍼즐판[idx + 1], 퍼즐판[idx + 2], 퍼즐판[idx + 3], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx + 1], 퍼즐판[idx + 2], 퍼즐판[idx + 3]];
+                } else if (idx === 빈칸idx + 4) {
+                    [퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2], 퍼즐판[idx - 3], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2], 퍼즐판[idx - 3]];
                 }
-                return true;
+                return set유효타일(true);
             }
         }
-        return false;
+        else{
+            return set유효타일(false);
+        }
+        
     };
 
-    const handleTileClick = (idx) => {
-        if (isShuffling) return;
-        
-        const emptyIndex = board.indexOf(null);
-        const newBoard = [...board];
-        
-        if (moveTile(idx, emptyIndex, newBoard)) {
-            setBoard(newBoard);
+    //마지막 인덱스가 셔플이
+    const 셔플시작 = () => {
+        setIsButtonVisible(false);
+        for (let i = 0; i < level*100; i++) {
+            if (유효타일===true) {
+                setTimeout(() => {
+                    const 빈칸idx = 퍼즐판.indexOf(null);
+                    const 랜덤idx = 퍼즐판[Math.floor(Math.random() * 퍼즐판.length)];
+                    타일이동(랜덤idx, 빈칸idx, 퍼즐판);
+                    set퍼즐판([...퍼즐판]);
+                }, i * 10);
+            }
+        }
+    };
+
+
+    const 타일클릭 = (idx) => {
+        const 빈칸idx = 퍼즐판.indexOf(null);
+        타일이동(idx, 빈칸idx, 퍼즐판) 
+            승리확인(퍼즐판);
             setIsActive(true);
-            Win(newBoard);
-        }
     };
 
-    const getValidMoves = (emptyIndex) => {
-        const validMoves = [];
-        for (let i = 0; i < 16; i++) {
-            if (i !== emptyIndex) {
-                const testBoard = [...board];
-                if (moveTile(i, emptyIndex, testBoard)) {
-                    validMoves.push(i);
-                }
-            }
-        }
-        return validMoves;
-    };
 
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const shuffleBoard = async () => {
-        setIsShuffling(true);
-        let newBoard = [...board];
-        for (let i = 0; i < 100; i++) {
-            const emptyIndex = newBoard.indexOf(null);
-            const validMoves = getValidMoves(emptyIndex);
-            const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
-            moveTile(randomMove, emptyIndex, newBoard);
-            setBoard([...newBoard]);
-            await sleep(10);
-        }
-        setIsShuffling(false);
-        setIsActive(true);
-        setIsButtonVisible(false)
-    };
-
-    const handleClick = () => {
-        if (!isShuffling) {
-            shuffleBoard();
-        }
-    };
-
-    const Win = (currentBoard) => {
-        const winningBoard = [...Array(15).keys(), null];
-        if (JSON.stringify(currentBoard) === JSON.stringify(winningBoard)) {
+    //승리확인은 나중에 다시한번 보자
+    const 승리확인 = () => {
+        const 승리판 = [...Array(level*level-1).keys(), null];
+        if (JSON.stringify(퍼즐판) === JSON.stringify(승리판)) {
             console.log('승리!');
             setIsActive(false);
         }
     };
 
-
-    
-
     return (
         <div className='퍼즐'>
-            {isButtonVisible ? (
-                <button
-                    className='btn'
-                    onClick={handleClick}
-                    disabled={isShuffling}
-                >
-                    {isShuffling ? '셔플 중...' : '게임시작'}
-                </button>
-            ) : null}
-            <div className='퍼즐-컨테이너'>
-                {board.map((value, idx) => (
-                    <div
-                        className={`퍼즐-조각 ${value === null ? '빈칸' : ''}`}
-                        key={idx}
+            {isButtonVisible ? (<button className='btn' onClick={셔플시작}>서플 버튼</button>) : null}
+            <div className='퍼즐-컨테이너'
+                style={{
+                    gridTemplateColumns: `repeat(${level}, 100px)`,
+                    gridTemplateRows: `repeat(${level}, 100px)`,
+                }}
+            >
 
-                        onClick={() => handleTileClick(idx)}
+                {퍼즐판.map((값, idx) => (
+                    <div
+                        className={`퍼즐-조각 ${값 === null ? '빈칸' : ''}`}
+                        key={idx}
+                        onClick={() => 타일클릭(idx)}
                     >
-                        {value !== null ? value + 1 : ''}
+                        {값 !== null ? 값 + 1 : ''}
                     </div>
                 ))}
             </div>

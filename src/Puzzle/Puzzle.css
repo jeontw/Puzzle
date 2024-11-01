@@ -13,12 +13,9 @@
     width: 410px;
     height: 410px;
     z-index: 2;
-    position: absolute;
 }
 .퍼즐-컨테이너 {
     display: grid;
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: repeat(4, 100px);
     gap: 2px;
     margin: auto;
 }

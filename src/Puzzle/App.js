@@ -3,7 +3,6 @@ import Puzzle from './Puzzle';
 import "./App.css"
 import Stopwatch from './Stopwatch';
 import Today from './Today';
-import World from './World';
 
 const App = () => {
     const [isActive, setIsActive] = useState(false);
@@ -28,15 +27,14 @@ const App = () => {
                         setk={setk}
                         />
                     </div>
-                    <div className='기록'>
+                    {/* <div className='기록'>
                         <Today
                         
                         k={k}
                         />
-                        </div>
+                        </div> */}
                     
                 </div>
-                <div className='미정'><World></World></div>
             </div>
         </>
     );
