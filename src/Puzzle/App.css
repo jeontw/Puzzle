@@ -18,10 +18,12 @@
 }
 
 .미정{
-  background-color: lightyellow;
+  background-color: white;
   width: 400px;
-  height: 710px;
+  height: 950px;
   margin-left: 20px;
+  border: dotted;
+  border-radius: 5px;
 }
 
 
@@ -33,12 +35,20 @@
 }
 
 .기록{
-  background-color: lightgray;
-  width: 630px;
-  height: 260px;
+  background-color: white;
+  width: 750px;
+  height: 250px;
   display: flex;
+  border: dotted;
+  border-radius: 5px;
 }
 .타이머{
   width: 180px;
   height: 100px;
+}
+h1{
+  color: white;
+}
+html{
+  background-color: black;
 }
