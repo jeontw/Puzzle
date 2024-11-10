@@ -1,34 +1,16 @@
+h1{
+  color: white;
+}
+html{
+  background-color: black;
+  font-family: '8bitOperatorPlus';
+}
 .App {
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-.제목{
-  text-align: center;
-  margin: 40px;
+.App-전체화면 {
 }
-
-.전체화면 {
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.미정{
-  background-color: white;
-  width: 400px;
-  height: 950px;
-  margin-left: 20px;
-  border: dotted;
-  border-radius: 5px;
-}
-
-
-
-.게임화면{
+.App-전체화면-게임화면{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,19 +18,58 @@
 
 .기록{
   background-color: white;
-  width: 750px;
-  height: 250px;
-  display: flex;
+  width: 400px;
+  height: 700px;
   border: dotted;
   border-radius: 5px;
 }
 .타이머{
   width: 180px;
   height: 100px;
+  margin-right: 50px;
 }
-h1{
-  color: white;
+.나의기록{
+  background-color: antiquewhite;
+  margin: 2px;
 }
-html{
-  background-color: black;
+
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlus8-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlus8-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlus-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlus-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlusSC-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: '8bitOperatorPlus';
+  src: url('/public/fonts/8bitOperatorPlusSC-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }

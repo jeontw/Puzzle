@@ -1,13 +1,39 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "./Puzzle.css";
 
-const Puzzle = ({ setIsActive }) => {
+const Puzzle = ({ seconds, setSeconds }) => {
     const audio = new Audio('/Woosh.mp3');
     const audio2 = new Audio('/Tiny.mp3');
     const audio3 = new Audio('/Good.mp3');
     const [level, setlevel] = useState(4);
     const [유효타일, set유효타일] = useState(true);
     const [퍼즐판, set퍼즐판] = useState([]); // 퍼즐 위치를 위한 숫자 배열
+
+
+
+    const [isActive, setIsActive] = useState(false);
+    const [intervalId, setIntervalId] = useState(null); // interval ID를 상태로 관리
+
+    useEffect(() => {
+        let interval;
+
+        if (isActive) {
+            interval = setInterval(() => {
+                setSeconds(prevSeconds => prevSeconds + 0.1);
+            }, 100);
+            setIntervalId(interval); // interval ID를 저장
+        }
+
+        return () => clearInterval(interval); // cleanup
+    }, [isActive, setSeconds]);
+
+
+    const handleReset = () => {
+        clearInterval(intervalId); // 타이머 정지
+        setSeconds(0); // 시간 초기화
+        setIsActive(false); // 타이머 비활성화
+        setIntervalId(null); // intervalId 초기화
+    };
 
 //검색어는 일러스트
 
@@ -207,49 +233,69 @@ const Puzzle = ({ setIsActive }) => {
 
         img.src = 업로드;
     }, [업로드, level]);
+
+    const handleFullscreen = () => {
+        document.documentElement.requestFullscreen();
+
+    };
     
-
-
+    const handleExitFullscreen = () => {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    };
 
     return (
-        <div>
+        <div className='퍼퍼퍼'>
             <div>
-                <button onClick={() =>{audio2.play(); setlevel(3)}}>3x3</button>
-                <button onClick={() =>{audio2.play(); setlevel(4)}}>4x4</button>
-                <button onClick={() =>{audio2.play(); setlevel(5)}}>5x5</button>
-                <input type="file" accept="image/*" onChange={handleImageUpload} />
-                <button onClick={셔플시작}>셔플 시작</button>
-
-            </div>
-            <div className='퍼즐'>
-                <canvas ref={ref} style={{ display: 'none' }} />
-                <div
-                    className='퍼즐-컨테이너'
-                    style={{ gridTemplateColumns: `repeat(${level}, 1fr)`, gap: '1px' }}
-                >
-                    {/* 값은 배열의 값이고 idx는 고정된 자리 인덱스다 */}
-                    {퍼즐판.map((값, idx) => (
-                        <div
-                            className={`퍼즐-조각 ${값 === null ? '빈칸' : ''}`}
-                            key={idx}
-                            onClick={() => 타일클릭(idx)}
-                        >
-                            {업로드 === null ? 값 + 1 : ''}
-                            {값 !== null && 이미지[값] && (
-                                <canvas
-                                    width={500 / level}
-                                    height={500 / level}
-                                    ref={ref => {
-                                        if (ref && 이미지[값]) {
-                                            const context = ref.getContext('2d');
-                                            context.putImageData(이미지[값], 0, 0);
-                                        }
-                                    }}
-                                />
-                            )}
-                        </div>
-                    ))}
+                <div>
+                    <button onClick={handleFullscreen}>game start</button>
+                    <button onClick={handleExitFullscreen}>game start</button>
+                    <button onClick={() => { audio2.play(); setlevel(3) }}>3x3</button>
+                    <button onClick={() => { audio2.play(); setlevel(4) }}>4x4</button>
+                    <button onClick={() => { audio2.play(); setlevel(5) }}>5x5</button>
+                    <input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} />
+                    <button onClick={셔플시작}>셔플 시작</button>
                 </div>
+                <div className='퍼즐'>
+                    <canvas ref={ref} style={{ display: 'none' }} />
+                    <div
+                        className='퍼즐-컨테이너'
+                        style={{ gridTemplateColumns: `repeat(${level}, 1fr)`, gap: '1px' }}
+                    >
+
+                        {/* 값은 배열의 값이고 idx는 고정된 자리 인덱스다 */}
+                        {퍼즐판.map((값, idx) => (
+                            <div
+                                className={`퍼즐-조각 ${값 === null ? '빈칸' : ''}`}
+                                key={idx}
+                                onClick={() => 타일클릭(idx)}
+                            >
+
+                                <h4>{업로드 === null ? 값 + 1 : ''}</h4>
+
+                                {값 !== null && 이미지[값] && (
+                                    <canvas
+                                        width={500 / level}
+                                        height={500 / level}
+                                        ref={ref => {
+                                            if (ref && 이미지[값]) {
+                                                const context = ref.getContext('2d');
+                                                context.putImageData(이미지[값], 0, 0);
+                                            }
+                                        }}
+                                    />
+                                )}
+                            </div>
+                        ))}
+
+                    </div>
+                </div>
+            </div>
+            <div className='타이머'>
+                <div><h1>이미지</h1></div>
+                <h1>Timer: {seconds.toFixed(1)}s</h1>
+                <button onClick={handleReset}>기록</button>
             </div>
         </div>
     );

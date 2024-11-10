@@ -1,8 +1,12 @@
-
 button{
     border-radius: 5px;
     border: dotted;
     margin: 5px;
+}
+.퍼퍼퍼{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .퍼즐{
     width: 550px;
@@ -12,6 +16,7 @@ button{
     background-color: white;
     border-radius: 5px;
     border: dotted;
+    
 }
 .퍼즐-컨테이너 {
     display: grid;
@@ -23,14 +28,14 @@ button{
     border: dotted 4px;
 }
 .퍼즐-조각 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: white;
     color: black;
     font-size: 24px;
     cursor: pointer;
     user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .퍼즐-조각:hover{
     background-color: sandybrown;
@@ -45,4 +50,9 @@ button{
 }
 .빈칸:hover{
     background-color: transparent;
+}
+.파일선택{
+    border-radius: 5px;
+    border: dotted;
+    width: 70px;
 }
