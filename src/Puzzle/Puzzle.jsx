@@ -1,18 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import "./Puzzle.css";
 
-const Puzzle = ({ seconds, setSeconds }) => {
+const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeconds, level, setlevel, set승리판, 승리판 }) => {
     const audio = new Audio('/Woosh.mp3');
     const audio2 = new Audio('/Tiny.mp3');
     const audio3 = new Audio('/Good.mp3');
-    const [level, setlevel] = useState(4);
     const [유효타일, set유효타일] = useState(true);
     const [퍼즐판, set퍼즐판] = useState([]); // 퍼즐 위치를 위한 숫자 배열
-
+    const [스크린, set스크린] = useState(false);
+    const [셔플유무, set셔플유무] = useState(null);
 
 
     const [isActive, setIsActive] = useState(false);
-    const [intervalId, setIntervalId] = useState(null); // interval ID를 상태로 관리
 
     useEffect(() => {
         let interval;
@@ -21,21 +19,33 @@ const Puzzle = ({ seconds, setSeconds }) => {
             interval = setInterval(() => {
                 setSeconds(prevSeconds => prevSeconds + 0.1);
             }, 100);
-            setIntervalId(interval); // interval ID를 저장
         }
-
         return () => clearInterval(interval); // cleanup
     }, [isActive, setSeconds]);
 
-
-    const handleReset = () => {
-        clearInterval(intervalId); // 타이머 정지
+    useEffect(() => {
+        clearInterval(); // 타이머 정지
         setSeconds(0); // 시간 초기화
-        setIsActive(false); // 타이머 비활성화
-        setIntervalId(null); // intervalId 초기화
+    }, [기록하기, setSeconds]);
+    const handleClose = () => {
+        set승리판(false); // 버튼 클릭 시 화면을 숨김
+        set기록하기(true);
     };
 
-//검색어는 일러스트
+    const resetPuzzle = () => {
+        set퍼즐판([...Array(level * level - 1).keys(), null]); // 퍼즐판 초기화
+        setIsActive(false); // 타이머 정지
+        setSeconds(0); // 시간 초기화
+        set스크린(false); // 사진 초기화
+        setInput(''); // 입력 값 초기화
+        set기록하기(true); // 기록하기 상태 초기화
+        set승리판(false); // 승리판 초기화
+        set이미지([]);
+        set업로드(null);
+    };
+
+
+    //검색어는 일러스트
 
     // level이 변경될 때 퍼즐판 초기화
     useEffect(() => {
@@ -111,6 +121,7 @@ const Puzzle = ({ seconds, setSeconds }) => {
     };
 
     const 셔플시작 = () => {
+        set셔플유무(true);
         for (let i = 0; i < level * 100; i++) {
             if (유효타일 === true) {
                 setTimeout(() => {
@@ -129,11 +140,15 @@ const Puzzle = ({ seconds, setSeconds }) => {
     };
 
     const 타일클릭 = (idx) => {
-        const 빈칸idx = 퍼즐판.indexOf(null);
-        타일이동(idx, 빈칸idx, 퍼즐판);
-        setIsActive(true);
-        승리확인();
-        audio.play();
+        if (셔플유무) {
+            const 빈칸idx = 퍼즐판.indexOf(null);
+            타일이동(idx, 빈칸idx, 퍼즐판);
+            setIsActive(true);
+            승리확인();
+            audio.play();
+            set기록하기(false);
+        }
+
     };
     //공부
     const 승리확인 = () => {
@@ -142,6 +157,8 @@ const Puzzle = ({ seconds, setSeconds }) => {
             console.log('승리!');
             setIsActive(false);
             audio3.play();
+            set승리판(true);
+            set셔플유무(false);
         }
     };
 
@@ -227,8 +244,9 @@ const Puzzle = ({ seconds, setSeconds }) => {
                     새로운조각.push(pieceImageData);
                 }
             }
-
+            document.documentElement.requestFullscreen();
             set이미지(새로운조각);
+            set스크린(true);
         };
 
         img.src = 업로드;
@@ -236,25 +254,30 @@ const Puzzle = ({ seconds, setSeconds }) => {
 
     const handleFullscreen = () => {
         document.documentElement.requestFullscreen();
-
+        set스크린(true);
     };
-    
+
     const handleExitFullscreen = () => {
         if (document.exitFullscreen) {
             document.exitFullscreen();
+            set스크린(false);
         }
     };
+    // 입력 값 변경 시 처리
+    const change = (e) => {
+        setInput(e.target.value);
+    };
+    
 
     return (
         <div className='퍼퍼퍼'>
             <div>
                 <div>
                     <button onClick={handleFullscreen}>game start</button>
-                    <button onClick={handleExitFullscreen}>game start</button>
-                    <button onClick={() => { audio2.play(); setlevel(3) }}>3x3</button>
-                    <button onClick={() => { audio2.play(); setlevel(4) }}>4x4</button>
-                    <button onClick={() => { audio2.play(); setlevel(5) }}>5x5</button>
-                    <input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} />
+                    {스크린 && (<button className='나가기' onClick={handleExitFullscreen}>X</button>)}
+                    <button onClick={() => { audio2.play(); setlevel(3); set기록하기(false); }}>3x3</button>
+                    <button onClick={() => { audio2.play(); setlevel(4); set기록하기(false); }}>4x4</button>
+                    <button onClick={() => { audio2.play(); setlevel(5); set기록하기(false); }}>5x5</button>
                     <button onClick={셔플시작}>셔플 시작</button>
                 </div>
                 <div className='퍼즐'>
@@ -293,10 +316,24 @@ const Puzzle = ({ seconds, setSeconds }) => {
                 </div>
             </div>
             <div className='타이머'>
-                <div><h1>이미지</h1></div>
+                <div><img src={업로드} style={{ width: '200px', height: '200px', objectFit: 'cover' }} /><input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} /></div>
                 <h1>Timer: {seconds.toFixed(1)}s</h1>
-                <button onClick={handleReset}>기록</button>
+                <button onClick={resetPuzzle}>다시시작 처음 부터</button>
             </div>
+            {승리판 && ( // `승리판`이 true일 때만 컴포넌트 렌더링
+                <div className="승리">
+                    <div className="승리판">
+                        승리!
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={change}
+                            placeholder="플레이어 이름을 입력하세요."
+                        />
+                        <button onClick={handleClose}>나가기</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
