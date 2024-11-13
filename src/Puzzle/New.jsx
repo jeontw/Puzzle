@@ -28,13 +28,13 @@ export default function New({input, seconds, level, 기록하기 }) {
                 // time이 짧은 순으로 정렬하고, 상위 3개의 기록만 유지
                 const sortedRecords = updatedRecords
                     .sort((a, b) => a.time - b.time)
-                    .slice(0, 3); // 3등까지만 유지
+                    .slice(0, 10); // 10등까지만 유지
                 // level에 맞는 키로 localStorage에 저장
                 localStorage.setItem(`records_level_${level}`, JSON.stringify(sortedRecords));
                 return sortedRecords;
             });
         }
-    }, [input, seconds, level]); // input, seconds, level을 의존성 배열에 추가
+    }, [기록하기]); // input, seconds, level을 의존성 배열에 추가
 
 
 

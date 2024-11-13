@@ -7,7 +7,7 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
     const [유효타일, set유효타일] = useState(true);
     const [퍼즐판, set퍼즐판] = useState([]); // 퍼즐 위치를 위한 숫자 배열
     const [스크린, set스크린] = useState(false);
-    const [셔플유무, set셔플유무] = useState(null);
+    const [셔플유무, set셔플유무] = useState(true);
 
 
     const [isActive, setIsActive] = useState(false);
@@ -158,7 +158,7 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
             setIsActive(false);
             audio3.play();
             set승리판(true);
-            set셔플유무(false);
+            // set셔플유무(false);
         }
     };
 
@@ -268,6 +268,12 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
         setInput(e.target.value);
     };
     
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          console.log('Enter key was pressed');
+          // 원하는 동작을 여기에 작성하세요.
+        }
+      };
 
     return (
         <div className='퍼퍼퍼'>
@@ -316,7 +322,7 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
                 </div>
             </div>
             <div className='타이머'>
-                <div><img src={업로드} style={{ width: '200px', height: '200px', objectFit: 'cover' }} /><input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} /></div>
+                <div><img src={업로드} alt='' style={{ width: '200px', height: '200px', objectFit: 'cover' }} /><input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} /></div>
                 <h1>Timer: {seconds.toFixed(1)}s</h1>
                 <button onClick={resetPuzzle}>다시시작 처음 부터</button>
             </div>
@@ -328,9 +334,10 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
                             type="text"
                             value={input}
                             onChange={change}
+                            onKeyDown={handleKeyDown}
                             placeholder="플레이어 이름을 입력하세요."
                         />
-                        <button onClick={handleClose}>나가기</button>
+                        <button onKeyDown={handleKeyDown} onClick={handleClose}>나가기</button>
                     </div>
                 </div>
             )}
