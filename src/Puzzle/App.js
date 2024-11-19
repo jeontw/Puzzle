@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Puzzle from './Puzzle';
 import "./App.css"
-import NxN from './NxN';
+import Data from './Data';
 
 const App = () => {
     const [seconds, setSeconds] = useState(0);
     const [level, setlevel] = useState(4);
-    const [승리판, set승리판] = useState(false);
-    const [기록하기, set기록하기] = useState(false);
-    const [input, setInput] = useState('');
+    const [기록, set기록] =useState(false);
+
     return (
             <div className="App">
                 <h1>Sliding Puzzle</h1>
@@ -19,24 +18,19 @@ const App = () => {
                             setSeconds={setSeconds}
                             level={level}
                             setlevel={setlevel}
-                            set승리판={set승리판}
-                            set기록하기={set기록하기}
-                            기록하기={기록하기}
-                            승리판={승리판}
-                            setInput={setInput}
-                            input={input}
+                            set기록={set기록}
+                            기록={기록}
                         />
-                            <div>
-                                <NxN
-                                    input={input}
-                                    seconds={seconds}
-                                    level={level}
-                                    기록하기={기록하기}
-                                />
-                            </div>
+                    <div>
+                        <div>
+                            {level === 3 && <Data seconds={seconds} set기록={set기록} 기록={기록} level={level} />}
+                            {level === 4 && <Data seconds={seconds} set기록={set기록} 기록={기록} level={level} />}
+                            {level === 5 && <Data seconds={seconds} set기록={set기록} 기록={기록} level={level} />}
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
     );
 };
 

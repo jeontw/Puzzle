@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeconds, level, setlevel, set승리판, 승리판 }) => {
+const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
     const audio = new Audio('/Woosh.mp3');
     const audio2 = new Audio('/Tiny.mp3');
     const audio3 = new Audio('/Good.mp3');
@@ -8,9 +8,20 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
     const [퍼즐판, set퍼즐판] = useState([]); // 퍼즐 위치를 위한 숫자 배열
     const [스크린, set스크린] = useState(false);
     const [셔플유무, set셔플유무] = useState(true);
-
-
     const [isActive, setIsActive] = useState(false);
+
+
+
+    const reset = ()=>{
+        set유효타일(true);
+        set퍼즐판([...Array(level * level - 1).keys(), null]);
+        set스크린(false);
+        set셔플유무(true);
+        setIsActive(false);
+        set이미지([]);
+        setSeconds(0);
+        set업로드(null);
+    }
 
     useEffect(() => {
         let interval;
@@ -26,23 +37,8 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
     useEffect(() => {
         clearInterval(); // 타이머 정지
         setSeconds(0); // 시간 초기화
-    }, [기록하기, setSeconds]);
-    const handleClose = () => {
-        set승리판(false); // 버튼 클릭 시 화면을 숨김
-        set기록하기(true);
-    };
-
-    const resetPuzzle = () => {
-        set퍼즐판([...Array(level * level - 1).keys(), null]); // 퍼즐판 초기화
-        setIsActive(false); // 타이머 정지
-        setSeconds(0); // 시간 초기화
-        set스크린(false); // 사진 초기화
-        setInput(''); // 입력 값 초기화
-        set기록하기(true); // 기록하기 상태 초기화
-        set승리판(false); // 승리판 초기화
-        set이미지([]);
-        set업로드(null);
-    };
+        setIsActive(false);
+    }, [기록,level, setSeconds]);
 
 
     //검색어는 일러스트
@@ -85,8 +81,7 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
                 [퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level * 2], 퍼즐판[idx - level * 3], 퍼즐판[빈칸idx]] =
                     [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - level], 퍼즐판[idx - level * 2], 퍼즐판[idx - level * 3]];
             }
-
-            return set유효타일(true);
+            return
         }
 
         if (idx - 빈칸idx < level || idx - 빈칸idx < -level) {
@@ -111,11 +106,11 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
                 } else if (idx === 빈칸idx + 4) {
                     [퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2], 퍼즐판[idx - 3], 퍼즐판[빈칸idx]] = [퍼즐판[빈칸idx], 퍼즐판[idx], 퍼즐판[idx - 1], 퍼즐판[idx - 2], 퍼즐판[idx - 3]];
                 }
-                return set유효타일(true);
+                return
             }
         }
         else {
-            return set유효타일(false);
+            return
         }
 
     };
@@ -146,7 +141,6 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
             setIsActive(true);
             승리확인();
             audio.play();
-            set기록하기(false);
         }
 
     };
@@ -157,7 +151,8 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
             console.log('승리!');
             setIsActive(false);
             audio3.play();
-            set승리판(true);
+            set기록(true);
+            set유효타일(true)
             // set셔플유무(false);
         }
     };
@@ -263,17 +258,7 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
             set스크린(false);
         }
     };
-    // 입력 값 변경 시 처리
-    const change = (e) => {
-        setInput(e.target.value);
-    };
-    
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-          console.log('Enter key was pressed');
-          // 원하는 동작을 여기에 작성하세요.
-        }
-      };
+
 
     return (
         <div className='퍼퍼퍼'>
@@ -281,10 +266,10 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
                 <div>
                     <button onClick={handleFullscreen}>game start</button>
                     {스크린 && (<button className='나가기' onClick={handleExitFullscreen}>X</button>)}
-                    <button onClick={() => { audio2.play(); setlevel(3); set기록하기(false); }}>3x3</button>
-                    <button onClick={() => { audio2.play(); setlevel(4); set기록하기(false); }}>4x4</button>
-                    <button onClick={() => { audio2.play(); setlevel(5); set기록하기(false); }}>5x5</button>
-                    <button onClick={셔플시작}>셔플 시작</button>
+                    <button onClick={() => { audio2.play(); setlevel(3);}}>3x3</button>
+                    <button onClick={() => { audio2.play(); setlevel(4);}}>4x4</button>
+                    <button onClick={() => { audio2.play(); setlevel(5);}}>5x5</button>
+                    <button onClick={셔플시작}>Shuffle</button>
                 </div>
                 <div className='퍼즐'>
                     <canvas ref={ref} style={{ display: 'none' }} />
@@ -324,23 +309,9 @@ const Puzzle = ({setInput,input, 기록하기, set기록하기, seconds, setSeco
             <div className='타이머'>
                 <div><img src={업로드} alt='' style={{ width: '200px', height: '200px', objectFit: 'cover' }} /><input className='파일선택' type="file" accept="image/*" onChange={handleImageUpload} /></div>
                 <h1>Timer: {seconds.toFixed(1)}s</h1>
-                <button onClick={resetPuzzle}>다시시작 처음 부터</button>
+                <button onClick={reset}>Reset</button>
             </div>
-            {승리판 && ( // `승리판`이 true일 때만 컴포넌트 렌더링
-                <div className="승리">
-                    <div className="승리판">
-                        승리!
-                        <input
-                            type="text"
-                            value={input}
-                            onChange={change}
-                            onKeyDown={handleKeyDown}
-                            placeholder="플레이어 이름을 입력하세요."
-                        />
-                        <button onKeyDown={handleKeyDown} onClick={handleClose}>나가기</button>
-                    </div>
-                </div>
-            )}
+            
         </div>
     );
 };
