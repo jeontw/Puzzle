@@ -6,7 +6,7 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
     const [유효타일, set유효타일] = useState(true);
     const [퍼즐판, set퍼즐판] = useState([]);
     const [전체화면, set전체화면] = useState(false);
-    const [셔플유무, set셔플유무] = useState();
+    const [셔플유무, set셔플유무] = useState(false);
     const [타이머, set타이머] = useState(false);
 
 
@@ -15,7 +15,7 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
         set유효타일(true);
         set퍼즐판([...Array(level * level - 1).keys(), null]);
         set전체화면(false);
-        set셔플유무(true);
+        set셔플유무(false);
         set타이머(false);
         set이미지([]);
         setSeconds(0);
@@ -108,7 +108,6 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
     };
     
     const 셔플시작 = () => {
-        set셔플유무(true);
         for (let i = 0; i < level * 100; i++) {
             if (유효타일 === true) {
                 setTimeout(() => {
@@ -122,8 +121,8 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
                     set이미지([...이미지]);
                 }, i * 10);
             }
-
         }
+        set셔플유무(true);
     };
 
     const 타일클릭 = (idx) => {
@@ -133,6 +132,9 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
             set타이머(true);
             승리확인();
             audio.play();
+        }
+        else{
+            셔플시작();
         }
     };
 
@@ -185,39 +187,8 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
             canvas.width = 크기;
             canvas.height = 크기;
 
-            // 원본 이미지 캔버스에 부르기
             context.drawImage(img, 0, 0, 크기, 크기);
 
-            // 픽셀 데이터를 가져와서 도트 효과 적용
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-
-            const 도트크기 = 4;
-            for (let y = 0; y < canvas.height; y += 도트크기) {
-                for (let x = 0; x < canvas.width; x += 도트크기) {
-                    const index = (y * canvas.width + x) * 4;
-
-                    const gray = data[index]/3 + data[index + 1]/3 + data[index + 2]/3;
-
-                    // 도트 크기만큼 같은 색상 적용
-                    for (let i = 0; i < 도트크기; i++) {
-                        for (let j = 0; j < 도트크기; j++) {
-                            if (y + i < canvas.height && x + j < canvas.width) {
-                                const idx = ((y + i) * canvas.width + (x + j)) * 4;
-                                data[idx] = gray;
-                                data[idx + 1] = gray;
-                                data[idx + 2] = gray;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // 도트 효과가 적용된 이미지 ㅜ르고
-            context.putImageData(imageData, 0, 0);
-
-            // 퍼즐 조각 생성 알고리즘
             const 새로운조각 = [];
             const 조각크기 = 크기 / level;
 
@@ -236,17 +207,22 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
         img.src = 업로드;
     }, [업로드, level]);
 
+    useEffect(()=> {
+        set셔플유무(false)
+    },[level])
+
 
     return (
         <div className='퍼퍼퍼'>
             <div>
                 <div>
-                    <button onClick={handleFullscreen}>game start</button>
+                    <button onClick={handleFullscreen}>Fullscreen</button>
                     {전체화면 && (<button className='나가기' onClick={handleExitFullscreen}>X</button>)}
                     <button onClick={() => { audio2.play(); setlevel(3);}}>3x3</button>
                     <button onClick={() => { audio2.play(); setlevel(4);}}>4x4</button>
                     <button onClick={() => { audio2.play(); setlevel(5);}}>5x5</button>
                     <button onClick={셔플시작}>Shuffle</button>
+                    <button onClick={()=>set셔플유무(true)}>ShuffleX</button>
                 </div>
                 <div className='퍼즐'>
                     <canvas ref={ref} style={{ display: 'none' }} />

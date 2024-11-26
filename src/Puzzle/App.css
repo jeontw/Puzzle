@@ -35,7 +35,9 @@ body, html {
   width: 350px;
   border-radius: 5px;
 }
-
+.평균기록{
+  margin: 10px;
+}
 .타이머{
   width: 180px;
   height: 100px;
@@ -44,15 +46,44 @@ body, html {
 .나의기록{
   background-color: antiquewhite;
   margin: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
 }
-
+.나의기록>div{
+  width: 70px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.나의기록:nth-child(2){
+  background-color: gold;
+}
+.나의기록:nth-child(3){
+  background-color: silver;
+}
+.나의기록:nth-child(4){
+  background-color: bisque;
+}
+.나의평균기록>div{
+  width: 110px;
+}
+.나의평균기록{
+  background-color: antiquewhite;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .승리 {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* 뷰포트 너비 전체 */
+  width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* 투명한 검정색 배경 */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -171,5 +202,43 @@ button{
   position: fixed;
   right: 0;
   top: 0;
+}
 
+.Link{
+  text-decoration: none;
+}
+.Link:hover {
+  text-decoration: underline;
+  text-decoration-color: red;
+}
+
+
+@keyFrames bounce {
+  100% {
+    top: -15px;
+  }
+}
+h1 span {
+  font-size: 80px;
+  color: #fff;
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  animation: bounce 0.5s ease infinite alternate;
+}
+h1 span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+h1 span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+h1 span:nth-child(4) {
+  animation-delay: 0.5s;
+}
+h1 span:nth-child(5) {
+  animation-delay: 0.6s;
+}
+h1 span:nth-child(6) {
+  animation-delay: 0.8s;
 }

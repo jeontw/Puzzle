@@ -29,10 +29,12 @@ export default function Data({ set기록, 기록, seconds, level }) {
 
     // Top 기록 초기화
     const 삭제 = () => {
-        setTopRecords([]);
-        setRecentRecords([]);
-        localStorage.removeItem(`records_level_${level}`);
-        localStorage.removeItem(`recent_records_level_${level}`);
+        if (window.confirm('초기화 하겠습니까?')) {
+            setTopRecords([]);
+            setRecentRecords([]);
+            localStorage.removeItem(`records_level_${level}`);
+            localStorage.removeItem(`recent_records_level_${level}`);
+        }
     };
 
     // 승리판 닫기 및 이름 등록
@@ -53,14 +55,13 @@ export default function Data({ set기록, 기록, seconds, level }) {
     useEffect(() => {
         if (기록) {
             set기록(false);
-            const audio3 = new Audio('/Good.mp3');
-            const now = new Date();
+            const audio3 = new Audio('/correct.mp3');
             const newRecord = {
                 time: seconds,
                 lv: level,
                 name: "",
-                date: now.toLocaleDateString(),
-                timeStamp: now.toLocaleTimeString(),
+                date: new Date().toLocaleDateString(),
+                timeStamp: new Date().toLocaleTimeString('en-KR'),
             };
 
             // Top 기록 처리
@@ -76,7 +77,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
             }
 
             // 최근 기록 처리
-            const updatedRecentRecords = [newRecord, ...recentRecords].slice(0, 5); // 최대 5개 유지
+            const updatedRecentRecords = [newRecord, ...recentRecords].slice(0, 10); // 최대 5개 유지
             setRecentRecords(updatedRecentRecords);
             localStorage.setItem(`recent_records_level_${level}`, JSON.stringify(updatedRecentRecords));
         }
@@ -106,21 +107,27 @@ export default function Data({ set기록, 기록, seconds, level }) {
                 </div>
                 {topRecords.slice(0, 5).map((record, idx) => (
                     <div className="나의기록" key={idx}>
-                        {idx + 1}등 {record.lv}X{record.lv} - {record.time.toFixed(1)}s - {record.name || "익명"} - {record.date}
+                        <div>{idx + 1}등</div>
+                        <div>{record.lv}X{record.lv}</div>
+                        <div>{record.time.toFixed(1)}s</div>
+                        <div>{record.name || "익명"}</div>
+                        <div>{record.date}</div>
                     </div>
                 ))}
             </div>
 
             <div className="기록">
-                <div>
-                    {level}X{level} 최근 5 게임 평균 : {recentRecords.length > 0
+                <div className="평균기록">
+                    {level}X{level} 최근 10 게임 평균 : {recentRecords.length > 0
                         ? (recentRecords.reduce((acc, record) => acc + record.time, 0) / recentRecords.length).toFixed(1)
                         : "0.0"}
                     s
                 </div>
                 {recentRecords.map((record, idx) => (
-                    <div className="나의기록" key={idx}>
-                        {record.lv}X{record.lv} - {record.time.toFixed(1)}s - {record.timeStamp}
+                    <div className="나의평균기록" key={idx}>
+                        <div>{record.lv}X{record.lv}</div>
+                        <div>{record.time.toFixed(1)}s</div>
+                        <div>{record.timeStamp}</div>
                     </div>
                 ))}
             </div>
