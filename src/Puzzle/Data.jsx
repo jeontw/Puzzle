@@ -89,6 +89,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
                 {승리판 && (
                     <div className="승리">
                         <div className="승리판">
+                        <div class="light-ray"></div>
                             <h1>Top 5에 들었습니다!</h1>
                             <input
                                 type="text"
@@ -118,10 +119,9 @@ export default function Data({ set기록, 기록, seconds, level }) {
 
             <div className="기록">
                 <div className="평균기록">
-                    {level}X{level} 최근 10 게임 평균 : {recentRecords.length > 0
+                    {level}X{level} 최근 {recentRecords.length} 게임 평균 : {recentRecords.length > 0
                         ? (recentRecords.reduce((acc, record) => acc + record.time, 0) / recentRecords.length).toFixed(1)
-                        : "0.0"}
-                    s
+                        : "0.0"}s
                 </div>
                 {recentRecords.map((record, idx) => (
                     <div className="나의평균기록" key={idx}>

@@ -139,6 +139,9 @@ button{
   border: dotted;
   margin: 5px;
 }
+button:active{
+  background-color: #9f9696;
+}
 .퍼퍼퍼{
   display: flex;
   justify-content: center;
@@ -174,7 +177,7 @@ button{
   align-items: center;
 }
 .퍼즐-조각:hover{
-  background-color: sandybrown;
+  background-color: rgb(144, 140, 136);
 }
 .퍼즐-조각:active{
   transform: scale(0.95);
@@ -213,6 +216,10 @@ button{
 }
 
 
+
+
+
+
 @keyFrames bounce {
   100% {
     top: -15px;
@@ -242,3 +249,57 @@ h1 span:nth-child(5) {
 h1 span:nth-child(6) {
   animation-delay: 0.8s;
 }
+
+
+
+
+
+
+
+
+.light-ray {
+  position: fixed;
+  top: 50%; /* 화면 중앙 위치 */
+  left: 50%; /* 화면 중앙 위치 */
+  width: 250%; /* 빛의 크기를 화면보다 크게 설정 */
+  height: 250%; /* 빛의 크기를 화면보다 크게 설정 */
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.1),
+    rgba(255, 255, 0, 0.3),
+    rgba(255, 255, 0, 0.1)
+  );
+  animation: spin 5s linear infinite;
+  z-index: -1;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
