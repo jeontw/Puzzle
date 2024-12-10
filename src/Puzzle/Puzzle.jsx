@@ -152,7 +152,7 @@ const Puzzle = ({set기록,기록, seconds, setSeconds, level, setlevel}) => {
 
     //화면 전환
     const handlefullscreen = () => {
-        document.documentElement.requestfullscreen();
+        document.documentElement.requestFullscreen();
         setFullScreen(true);
     };
 
