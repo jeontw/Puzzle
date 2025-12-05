@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { saveScore } from '../saveScore'; 
+
 
 export default function Data({ set기록, 기록, seconds, level }) {
-    const [topRecords, setTopRecords] = useState([]); // Top 5 기록
-    const [recentRecords, setRecentRecords] = useState([]); // 최근 5게임 기록
+    const [topRecords, setTopRecords] = useState([]); 
+    const [recentRecords, setRecentRecords] = useState([]); 
     const [input, setInput] = useState("");
     const [승리판, set승리판] = useState(false);
     const [currentTopRecord, setCurrentTopRecord] = useState(null);
@@ -19,7 +21,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
         }
     };
 
-    // useEffect로 초기 데이터 로드
+
     useEffect(() => {
         const storedTopRecords = localStorage.getItem(`records_level_${level}`);
         const storedRecentRecords = localStorage.getItem(`recent_records_level_${level}`);
@@ -27,7 +29,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
         if (storedRecentRecords) setRecentRecords(JSON.parse(storedRecentRecords));
     }, [level]);
 
-    // Top 기록 초기화
+
     const 삭제 = () => {
         if (window.confirm('초기화 하겠습니까?')) {
             setTopRecords([]);
@@ -37,15 +39,22 @@ export default function Data({ set기록, 기록, seconds, level }) {
         }
     };
 
-    // 승리판 닫기 및 이름 등록
+
     const handleClose = () => {
-        const updatedRecord = { ...currentTopRecord, name: input };
+        const nameToSave = input.trim() !== "" ? input.trim() : "익명";
+        
+
+        const updatedRecord = { ...currentTopRecord, name: nameToSave };
         const updatedTopRecords = [updatedRecord, ...topRecords]
             .sort((a, b) => a.time - b.time)
-            .slice(0, 5); // 최대 5개 유지
+            .slice(0, 5);
 
         setTopRecords(updatedTopRecords);
         localStorage.setItem(`records_level_${level}`, JSON.stringify(updatedTopRecords));
+
+
+        saveScore(nameToSave, updatedRecord.time, level); 
+
 
         set승리판(false);
         setInput("");
@@ -77,7 +86,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
             }
 
             // 최근 기록 처리
-            const updatedRecentRecords = [newRecord, ...recentRecords].slice(0, 10); // 최대 5개 유지
+            const updatedRecentRecords = [newRecord, ...recentRecords].slice(0, 10);
             setRecentRecords(updatedRecentRecords);
             localStorage.setItem(`recent_records_level_${level}`, JSON.stringify(updatedRecentRecords));
         }
@@ -104,7 +113,7 @@ export default function Data({ set기록, 기록, seconds, level }) {
                     </div>
                 )}
                 <div>
-                    {level}X{level} Top 5 Rankings<button onClick={삭제}>랭킹초기화</button>
+                    {level}X{level} Local Top 5 Rankings<button onClick={삭제}>랭킹초기화</button>
                 </div>
                 {topRecords.slice(0, 5).map((record, idx) => (
                     <div className="나의기록" key={idx}>
