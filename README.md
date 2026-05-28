@@ -1,3 +1,5 @@
+start game web https://slidingpuzzle-5ef8f.web.app/SlidingPuzzle
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
